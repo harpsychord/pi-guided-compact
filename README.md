@@ -55,8 +55,8 @@ pi -e npm:pi-guided-compact                 # try it for one invocation
 From git (this repository):
 
 ```bash
-pi install git:github.com/<you>/pi-guided-compact   # default branch
-pi install git:github.com/<you>/pi-guided-compact@v1.0.0  # pinned tag
+pi install git:github.com/harpsychord/pi-guided-compact   # default branch
+pi install git:github.com/harpsychord/pi-guided-compact@v1.0.0  # pinned tag
 ```
 
 From a local directory:

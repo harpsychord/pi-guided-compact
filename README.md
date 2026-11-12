@@ -44,11 +44,25 @@ you continue from one, check its record-grounded claims against the files.
 
 ## Install
 
-As a pi package (preferred):
+From npm (once published):
+
+```bash
+pi install npm:pi-guided-compact            # latest version
+pi install npm:pi-guided-compact@1.0.0      # pinned version
+pi -e npm:pi-guided-compact                 # try it for one invocation
+```
+
+From git (this repository):
+
+```bash
+pi install git:github.com/<you>/pi-guided-compact   # default branch
+pi install git:github.com/<you>/pi-guided-compact@v1.0.0  # pinned tag
+```
+
+From a local directory:
 
 ```bash
 pi install ./pi-guided-compact          # local directory
-pi install git:github.com/<you>/pi-guided-compact   # or from git
 pi -e ./pi-guided-compact               # try it for one invocation
 ```
 
@@ -61,7 +75,8 @@ pi agent settings (`~/.pi/agent/settings.json`):
 
 Extensions load at session start, so start a new session (or `/reload`)
 after installing. `pi list` shows installed packages; `pi remove <source>`
-removes one.
+removes one. Versioned npm specifications and git tags/commits are pinned;
+`pi update --extensions` reconciles package installations.
 
 ## Configuration
 

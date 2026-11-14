@@ -1,6 +1,6 @@
 {
   "name": "pi-guided-compact",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Context-driven compaction summarizer for pi: plain-language, decision-explicit summaries anchored on the session's own durable status record when one is present in the session's context.",
   "type": "module",
   "main": "index.ts",

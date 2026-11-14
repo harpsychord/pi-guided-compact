@@ -48,7 +48,7 @@ From npm (once published):
 
 ```bash
 pi install npm:pi-guided-compact            # latest version
-pi install npm:pi-guided-compact@1.0.0      # pinned version
+pi install npm:pi-guided-compact@1.0.1      # pinned version
 pi -e npm:pi-guided-compact                 # try it for one invocation
 ```
 
@@ -56,7 +56,7 @@ From git (this repository):
 
 ```bash
 pi install git:github.com/harpsychord/pi-guided-compact   # default branch
-pi install git:github.com/harpsychord/pi-guided-compact@v1.0.0  # pinned tag
+pi install git:github.com/harpsychord/pi-guided-compact@v1.0.1  # pinned tag
 ```
 
 From a local directory:

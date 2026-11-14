@@ -8,7 +8,7 @@
  * Any failure falls back to the default compaction (return nothing).
  */
 
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { convertToLlm, serializeConversation } from "@earendil-works/pi-coding-agent";
 import { uuidv7 } from "@earendil-works/pi-ai";
 import { existsSync } from "node:fs";
@@ -176,12 +176,18 @@ export default function (pi: ExtensionAPI) {
 }
 
 async function runSummarizer(
-  ctx: { model: any; modelRegistry: any },
+  ctx: Pick<ExtensionContext, "model" | "modelRegistry" | "thinkingLevel">,
   prompt: string,
   signal: AbortSignal,
   maxTokens: number,
 ): Promise<{ text: string; usage?: unknown }> {
-  const response = await ctx.modelRegistry.complete(
+  if (!ctx.model) throw new Error("No active model is available for compaction summarization");
+  if (ctx.thinkingLevel === undefined) {
+    throw new Error("Pi did not provide the active thinking level for compaction summarization");
+  }
+
+  const reasoning = ctx.thinkingLevel === "off" ? undefined : ctx.thinkingLevel;
+  const response = await ctx.modelRegistry.streamSimple(
     ctx.model,
     {
       messages: [
@@ -192,10 +198,25 @@ async function runSummarizer(
         },
       ],
     },
-    { maxTokens: maxTokens, signal, cacheRetention: "none", sessionId: uuidv7() },
-  );
+    {
+      maxTokens,
+      reasoning,
+      signal,
+      cacheRetention: "none",
+      sessionId: uuidv7(),
+    },
+  ).result();
+
+  if (response.stopReason !== "stop") {
+    const reason = response.errorMessage ??
+      (response.stopReason === "length"
+        ? "response reached the output token limit"
+        : `unexpected stop reason: ${response.stopReason}`);
+    throw new Error(`Compaction summarization failed: ${reason}`);
+  }
+
   const text = response.content
-    .filter((c: any): c is { type: "text"; text: string } => c.type === "text")
+    .filter((c): c is { type: "text"; text: string } => c.type === "text")
     .map((c) => c.text)
     .join("\n");
   return { text, usage: response.usage };

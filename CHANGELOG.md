@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.1]
+
+- Fix empty-summary fallback in workspaces where the session model
+  rejects the provider-default reasoning level (e.g.
+  `openai-codex/gpt-6-luna`, which accepts no off/none): the
+  summarizer call now passes the session's thinking level through the
+  provider-neutral `streamSimple()` reasoning option, so it behaves
+  like the session's own turns.
+- Provider error responses (`stopReason: "error"`, no text) are now
+  reported as failures with the provider's error message instead of
+  being misclassified as "empty summary"; the failed attempt is
+  recorded in the `/compact-config` last-run display.
+- A `length`-stopped (truncated) summary is no longer persisted as the
+  compaction checkpoint; the extension falls back to default
+  compaction instead.
+
 ## [1.0.0]
 
 - Initial release.

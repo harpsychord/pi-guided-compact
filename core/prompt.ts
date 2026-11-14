@@ -82,9 +82,8 @@ export function buildSummaryPrompt(input: PromptInput): string {
     parts.push(input.violationNote);
   }
 
-  // No thinking-level tag: the session's default thinking level applies
-  // (medium, per the owner's 2026-11-12 directive to test with defaults).
-  // Round history is in the pi-guided-compact build log.
+  // Reasoning is configured by the caller through the provider-neutral
+  // SimpleStreamOptions.reasoning field, not embedded in this prompt.
 
   return parts.join("\n\n");
 }
